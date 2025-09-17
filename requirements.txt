@@ -1,0 +1,27 @@
+# Core FastAPI dependencies
+fastapi>=0.100.0
+uvicorn[standard]>=0.20.0
+python-multipart>=0.0.6
+pydantic>=2.0.0
+aiofiles>=23.0.0
+
+# RAG and Vector Database
+chromadb>=0.4.0
+sentence-transformers>=2.0.0
+
+# Document processing
+PyPDF2>=3.0.0
+python-docx>=1.0.0
+
+# Audio/Video processing
+openai-whisper>=20230314
+moviepy>=1.0.0
+librosa>=0.9.0
+soundfile>=0.12.0
+
+# Computer vision
+opencv-python>=4.5.0
+Pillow>=9.0.0
+
+# Utilities
+numpy>=1.20.0
