@@ -1,0 +1,62 @@
+services:
+  backend:
+    build: .
+    image: multimodal-rag:latest
+    container_name: rag-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - CHROMA_PERSIST_DIRECTORY=/app/vector_db
+      - LOG_LEVEL=INFO
+      - VOSK_MODEL_PATH=/app/models/vosk-model-en-us-0.22
+    volumes:
+      - ./uploads:/app/uploads
+      - ./logs:/app/logs
+      - ./vector_db:/app/vector_db
+      - ./models:/app/models
+    command: uv run uvicorn backend.main:app --host 0.0.0.0 --port 8000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  frontend:
+    build: .
+    image: multimodal-rag:latest
+    container_name: rag-frontend
+    ports:
+      - "8501:8501"
+    environment:
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+      - BACKEND_URL=http://backend:8000
+    volumes:
+      - ./uploads:/app/uploads
+      - ./logs:/app/logs
+    command: uv run streamlit run frontend/app.py --server.port 8501 --server.address 0.0.0.0
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+volumes:
+  uploads_data:
+  logs_data:
+  vector_db_data:
+  models_data:
+
+networks:
+  default:
+    name: rag-network
