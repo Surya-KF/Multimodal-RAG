@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Multimodal RAG Chatbot
 
 A powerful multimodal Retrieval-Augmented Generation (RAG) chatbot that processes PDFs, audio, and video files to provide intelligent, context-aware responses with proper source citations.
@@ -344,3 +345,6 @@ docker-compose logs -f
 - [Google Gemini](https://ai.google.dev/) for language model integration
 ---
 
+=======
+# Multimodal-RAG
+>>>>>>> 7ac712a06221b3076f98d4701e7c57e446e7fbf5
